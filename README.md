@@ -1,7 +1,7 @@
 # Autonomous Robots: Path Planning
 Assignments for my Path Planning Course
 
-Course link: 
+Course link: https://www.udemy.com/course/autonomous-robots-path-planning
 
 
 Required Packages
