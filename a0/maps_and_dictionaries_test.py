@@ -8,6 +8,11 @@ print('')
 # Create a blank dictionary called employees
 employees = {}
 
+employees[0] = "Ryan"
+employees[1] = "Andre"
+employees[2] = "Ted"
+employees[3] = "Alex"
+
 # Make the Key the employee number, and the Value their name.
 # Key: 0  Value: 'Ryan'
 # Key: 1  Value: 'Andre'
@@ -19,7 +24,7 @@ employees = {}
 test(employees[0], 'Ryan')
 
 # Sort the employees in alphabetical order.
-sorted_employees = sorted(employees)
+sorted_employees = sorted(employees, key=employees.get, reverse=False)
 test(sorted_employees[0], 3)
 test(sorted_employees[1], 1)
 test(sorted_employees[2], 0)
@@ -27,13 +32,14 @@ test(sorted_employees[3], 2)
 
 
 # Pop employee number 2 and store name in "name".
-name = ''
+name = employees.pop(2)
 test(name, 'Ted')
 
 try: 
     employees[2]
+    print('Failed Popping employee')
 except: 
     print('Passed All Dictionary Tests!')
     exit()
-print('Failed Popping employee')
+
 
