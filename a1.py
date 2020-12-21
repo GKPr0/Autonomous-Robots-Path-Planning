@@ -1,8 +1,8 @@
 import numpy as np
 start = np.array([0, 0])
-goal = np.array([5, 9])
+goal = np.array([0, 4])
 grid = np.array([[0, 0, 0, 0, 0, 0, 0, 1, 0, 0],  # Row 0
-                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 1
+                 [0, 1, 1, 1, 1, 1, 0, 1, 0, 0],  # Row 1
                  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 2
                  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 3
                  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 4
@@ -39,15 +39,21 @@ class BreadthFirstSearch:
             if not self.valid_move(move):
                 continue
             # Check if move has already been explored.
-
+            if (str(move) not in self.explored) and (str(move) not in self.not_explored):
+                self.not_explored[str(move)] = self.pos_depth + 1
+            
         # Since all next possible moves have been determined,
         # consider current location explored.
+        self.explored[self.pos_str] = self.pos_depth
 
         return True
 
     def goal_found(self):
-        if True:
+        if self.goal_str in self.not_explored:
             # Add goal to path.
+            self.pos = self.string_to_array(self.goal_str)
+            self.pos_depth = self.not_explored.pop(self.goal_str)
+            self.path[self.pos[0], self.pos[1]] =  self.pos_depth
             return True
         return False
 
@@ -56,11 +62,18 @@ class BreadthFirstSearch:
         sorted_not_explored = sorted(
             self.not_explored,
             key=self.not_explored.get,
-            reverse=False)
+            reverse=True)
 
         # Determine the pos and depth of next move.
+        key = sorted_not_explored[0]
+        self.pos_str = key
+        self.pos = self.string_to_array(key)
+        self.pos_depth = self.not_explored[key]
 
+        self.not_explored.pop(key)
+        
         # Write depth of next move onto path.
+        self.path[self.pos[0], self.pos[1]] = self.pos_depth
 
         return True
 
