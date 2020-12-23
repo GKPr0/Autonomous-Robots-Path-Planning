@@ -65,34 +65,51 @@ class AStarSearch:
     def get_possible_moves(self):
         # Iterate through connections and add applicable to not_explored.
         for connection in self.location.connections:
-            if connection not in {} and connection not in {}:
-                # self.length_depth
-                # self.road_distance(self.location, connection)
-                # self.intersection_cost(connection)
-                # self.heuristic(connection)
-                
+            if connection not in self.explored:
+                dist = self.road_distance(self.location, connection)
+                inter_cost = self.intersection_cost(connection)
+                heurestic_cost = self.heuristic(connection)
+
+                total_cost = self.length_depth + dist + inter_cost + heurestic_cost
+                if connection in self.not_explored:
+                    current_cost = self.not_explored[connection]
+                    if total_cost < current_cost:
+                        self.not_explored[connection] = total_cost
+                        connection.arrived_by = self.location
+                        continue
+
+                self.not_explored[connection] = total_cost
                 # Save direction arrived by to allow to track turn direction.
                 connection.arrived_by = self.location
 
         # Add current position to explored set value to 
-        # self.length_depth + self.heuristic(self.location)
+        self.explored[self.location] =  self.length_depth + self.heuristic(self.location)
 
     def goal_found(self):
-        if True:
+        if self.goal in self.explored:
             return True
         return False
 
     def explore_next_move(self):
         # Determine next move to explore.
+        sorted_not_explored = sorted(self.not_explored,
+                                    key=self.not_explored.get,
+                                    reverse=False)
 
         # Determine the pos and depth of next move.
-        # self.direction_update(sorted_not_explored[0])
-        # self.location = 
-        # self.length_depth =
+        intersection = sorted_not_explored[0]
+        self.direction_update(intersection)
+        self.location = intersection
+        self.length_depth = self.not_explored.pop(intersection) - self.heuristic(intersection)
+        
         return True
 
     def heuristic(self, connection):
-        return round(np.sqrt(1), 1)
+        x,y = connection.position
+        g_x, g_y = self.goal.position
+
+        diff = np.array([x - g_x, y - g_y])
+        return round(np.sqrt(sum(diff**2)), 1)
 
     def road_distance(self, int1, int2):
         distance = abs(int1.position[0] - int2.position[0])
