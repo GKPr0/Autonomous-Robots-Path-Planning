@@ -3,13 +3,13 @@ start = np.array([0, 0])
 goal = np.array([5, 9])
 grid = np.array([[0, 0, 0, 0, 0, 0, 0, 1, 0, 0],  # Row 0
                  [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 1
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 2
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 2
                  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 3
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 4
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 5
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 6
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 7
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 8
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 4
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 5
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 6
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 7
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 8
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) # Row 9
         # Columns 0  1  2  3  4  5  6  7  8  9
 
@@ -41,15 +41,21 @@ class AStarSearch:
             if not self.valid_move(move):
                 continue
             # Check if move has already been explored.
+            if (str(move) not in self.explored) and (str(move) not in self.not_explored):
+                self.not_explored[str(move)] = (self.pos_depth + 1) + self.heuristic(move)
                 # Visualize the Heuristic Grid
-
+                self.h_grid[move[0], move[1]] = self.not_explored[str(move)]
         # Since all next possible moves have been determined,
         # consider current location explored.
+        self.explored[self.pos_str] = self.pos_depth
         return True
 
     def goal_found(self):
-        if True:
+        if self.goal_str in self.not_explored:
             # Add goal to path.
+            self.pos = self.string_to_array(self.goal_str)
+            heurestic_cost = self.not_explored.pop(self.goal_str)
+            self.path[self.pos[0], self.pos[1]] = heurestic_cost
             return True
         return False
 
@@ -59,16 +65,25 @@ class AStarSearch:
             self.not_explored,
             key=self.not_explored.get,
             reverse=False)
-
+ 
         # Determine the pos and depth of next move.
+        self.pos_str = sorted_not_explored[0]
+        self.pos = self.string_to_array(self.pos_str)
+        self.pos_depth = round(self.not_explored.pop(self.pos_str) - self.heuristic(self.pos))
+
         
         # Write depth of next move onto path.
+        x = self.pos[0]
+        y = self.pos[1]
+        self.path[x, y] = round(self.pos_depth, 1)
 
         return True
 
     def heuristic(self, move):
-        answer = 0.0
-        return round(answer, 1)
+        diff = move - self.string_to_array(self.goal_str)
+        answer = np.sqrt(sum(diff**2))
+
+        return round(answer, 2)
 
     # END - Student Section
 
@@ -81,8 +96,8 @@ class AStarSearch:
         r = np.array([0, 1])
 
         potential_moves = [pos + u, pos + d, pos + l, pos + r]
-        # Students, uncomment the line below,  what happens?
-        #potential_moves += [pos + u+r, pos + u+l, pos + d+r, pos + d+l]
+        # Diagonals move
+        potential_moves += [pos + u+r, pos + u+l, pos + d+r, pos + d+l]
         return potential_moves
 
     def valid_move(self, move):
