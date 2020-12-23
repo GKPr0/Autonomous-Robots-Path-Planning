@@ -1,15 +1,15 @@
 import numpy as np
 start = np.array([0, 0])
-goal = np.array([0, 4])
+goal = np.array([5, 9])
 grid = np.array([[0, 0, 0, 0, 0, 0, 0, 1, 0, 0],  # Row 0
-                 [0, 1, 1, 1, 1, 1, 0, 1, 0, 0],  # Row 1
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 2
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 3
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 4
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 5
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 6
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 7
-                 [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],  # Row 8
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 1
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 2
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 3
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 4
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 5
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 6
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 7
+                 [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],  # Row 8
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) # Row 9
         # Columns 0  1  2  3  4  5  6  7  8  9
 
@@ -62,7 +62,7 @@ class BreadthFirstSearch:
         sorted_not_explored = sorted(
             self.not_explored,
             key=self.not_explored.get,
-            reverse=True)
+            reverse=False)
 
         # Determine the pos and depth of next move.
         key = sorted_not_explored[0]
@@ -88,8 +88,8 @@ class BreadthFirstSearch:
         r = np.array([0, 1])
 
         potential_moves = [pos + u, pos + d, pos + l, pos + r]
-        # Students, uncomment the line below,  what happens?
-        #potential_moves += [pos + u+r, pos + u+l, pos + d+r, pos + d+l]
+        # Diagonal moves
+        potential_moves += [pos + u+r, pos + u+l, pos + d+r, pos + d+l]
         return potential_moves
 
     def valid_move(self, move):
