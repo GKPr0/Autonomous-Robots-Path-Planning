@@ -16,13 +16,13 @@ matploblib=3.1.0
 -> BFS and DFS algorithms 
 
 <h4>Assigment 2:</h4>
--> A* implemented on simple grid world, with heurestic function simple counting distance to goal location
+-> A* implemented on simple grid world, with simple counting distance to goal location as heuristic function
 
 <h4>Assigment 3:</h4>
--> A* algorithum same as in previsouse assigment, but applied to New York map
+-> A* algorithm same as in previous assignment, but applied to New York map
 
 <h4>Assigment 4:</h4>
--> Advanced A* algorith focused on having admissible and consistent heurestic, so it will find most optimal way to goal.
+-> Advanced A* algorithm focused on having admissible and consistent heuristic, so it will find the most optimal way to goal.
 
 -> Admissible heurestic: https://en.wikipedia.org/wiki/Admissible_heuristic <br>
 -> Consistent heurestic: https://en.wikipedia.org/wiki/Consistent_heuristic
