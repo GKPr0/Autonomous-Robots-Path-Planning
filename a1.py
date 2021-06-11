@@ -57,6 +57,15 @@ class BreadthFirstSearch:
             return True
         return False
 
+    '''
+        To switch from BFS to DFS you just need to sort not explored list 
+        so the first element will be the one with the max depth.
+
+        i.e.
+        sorted_not_explored = sorted(...
+            reverse=True)
+        
+    '''
     def explore_next_move(self):
         # Determine next move to explore.
         sorted_not_explored = sorted(
